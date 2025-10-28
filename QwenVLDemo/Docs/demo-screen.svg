@@ -1,0 +1,64 @@
+<svg width="1280" height="960" viewBox="0 0 1280 960" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f8fb" />
+      <stop offset="1" stop-color="#e5ecfa" />
+    </linearGradient>
+    <filter id="card" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="18" stdDeviation="28" flood-color="#000000" flood-opacity="0.15" />
+    </filter>
+    <style>
+      .title { font: 600 38px 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif; fill: #1f2937; }
+      .subtitle { font: 500 22px 'SF Pro Text', 'Helvetica Neue', Arial; fill: #2563eb; }
+      .label { font: 600 20px 'SF Pro Text', 'Helvetica Neue', Arial; fill: #1f2937; }
+      .caption { font: 400 18px 'SF Pro Text', 'Helvetica Neue', Arial; fill: #4b5563; }
+      .button { font: 600 20px 'SF Pro Text', 'Helvetica Neue', Arial; fill: #ffffff; }
+      .prompt { font: 400 17px 'SF Mono', Menlo, monospace; fill: #1f2937; }
+      .output { font: 400 18px 'SF Pro Text', 'Helvetica Neue', Arial; fill: #1f2937; }
+    </style>
+  </defs>
+  <rect width="1280" height="960" fill="url(#bg)" />
+
+  <g transform="translate(160 120)">
+    <rect width="960" height="720" rx="40" fill="#ffffff" filter="url(#card)" />
+    <g transform="translate(60 60)">
+      <text class="subtitle">Qwen3-VL MLX Demo</text>
+      <text class="caption" y="44">写真とプロンプトからビジョンランゲージ回答を生成</text>
+
+      <!-- Image placeholder -->
+      <g transform="translate(0 120)">
+        <text class="label">画像入力</text>
+        <rect x="0" y="28" width="520" height="320" rx="24" fill="#f9fafb" stroke="#d1d5db" stroke-dasharray="12 8" />
+        <g transform="translate(220 160)">
+          <rect x="-56" y="-56" width="112" height="112" rx="24" fill="#eff6ff" stroke="#bfdbfe" />
+          <path d="M-20 -14 h40" stroke="#2563eb" stroke-width="8" stroke-linecap="round" />
+          <path d="M0 -34 v40" stroke="#2563eb" stroke-width="8" stroke-linecap="round" />
+        </g>
+        <text class="caption" x="260" y="320" text-anchor="middle">ここに撮影した写真が表示されます</text>
+        <rect x="0" y="380" width="240" height="52" rx="16" fill="#2563eb" />
+        <text class="button" x="120" y="413" text-anchor="middle">画像を選択 / 撮影</text>
+      </g>
+
+      <!-- Prompt -->
+      <g transform="translate(560 120)">
+        <text class="label">プロンプト</text>
+        <rect x="0" y="28" width="280" height="230" rx="18" fill="#f8fafc" stroke="#cbd5f5" />
+        <text class="prompt" x="20" y="64">この写真の内容を詳細に説明し...</text>
+        <text class="prompt" x="20" y="96">重要な要素を箇条書きでまとめ...</text>
+        <text class="prompt" x="20" y="128">最後に推測されるストーリーを...</text>
+        <rect x="0" y="274" width="240" height="48" rx="16" fill="#1d4ed8" />
+        <text class="button" x="120" y="306" text-anchor="middle">文章を生成</text>
+      </g>
+
+      <!-- Output -->
+      <g transform="translate(0 540)">
+        <text class="label">生成結果</text>
+        <rect x="0" y="28" width="840" height="160" rx="20" fill="#f1f5f9" stroke="#cbd5f5" />
+        <text class="output" x="24" y="68">・青い空の下で撮影された、子どもと犬が写る公園の様子</text>
+        <text class="output" x="24" y="102">・滑り台の近くで笑顔の子どもと、リードが付いたゴールデンレトリバー</text>
+        <text class="output" x="24" y="136">・背景には桜の木が満開、春の暖かさを感じる</text>
+        <text class="output" x="24" y="170">推測されるストーリー: 家族が春の休日に公園で過ごしている。</text>
+      </g>
+    </g>
+  </g>
+</svg>

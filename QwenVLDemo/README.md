@@ -5,6 +5,10 @@
 を実行する SwiftUI デモアプリです。カメラまたはフォトライブラリから写真を取得し、
 任意のプロンプトでビジョン・ランゲージ推論を行い、生成された文章を画面に表示します。
 
+<p align="center">
+  <img src="Docs/demo-screen.svg" alt="アプリの画面イメージ" width="720" />
+</p>
+
 > ⚠️ **注意**: MLX Swift の Vision-Language API は頻繁に更新されています。
 > `QwenVLModel` の実装は最新の `mlx-swift` main ブランチを前提にしています。
 > API の変更に合わせて型名 / メソッド名を調整してください。
