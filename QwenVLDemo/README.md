@@ -1,6 +1,6 @@
-# Qwen3-VL MLX Demo (iPad)
+# Qwen3-VL MLX Demo (iPad & iPhone)
 
-このリポジトリは、iPad Pro 上で Apple の **MLX Swift** ランタイムを使って
+このリポジトリは、iPad Pro や iPhone 15 Pro など Apple シリコン搭載デバイス上で Apple の **MLX Swift** ランタイムを使って
 [Qwen3-VL-4B-Instruct-MLX-4bit](https://huggingface.co/mlx-community/Qwen3-VL-4B-Instruct-MLX-4bit)
 を実行する SwiftUI デモアプリです。カメラまたはフォトライブラリから写真を取得し、
 任意のプロンプトでビジョン・ランゲージ推論を行い、生成された文章を画面に表示します。
@@ -27,11 +27,14 @@ QwenVLDemo/
 
 ## 必要条件
 
-- iPad Pro (M2/M4 チップ) もしくは Apple シリコン搭載 Mac + Xcode 15 以降
-- iPadOS 17.4 以降（MLX Swift がサポートする最小バージョンに合わせてください）
+- iPad Pro (M1/M2/M4 チップ) または iPhone 15 Pro シリーズ
+- iPadOS / iOS 17.4 以降（MLX Swift がサポートする最小バージョンに合わせてください）
+- Apple シリコン搭載 Mac + Xcode 15 以降（ビルド／デバッグ用）
 - Xcode 15.4 以降 & Swift 5.9 以上
 - `mlx-swift` パッケージ (Xcode から自動取得)
 - Hugging Face アカウントとアクセストークン（モデルのダウンロードに使用）
+
+> 💡 **iPhone 15 Pro シリーズでの注意**: メモリ使用量が大きいため、実行前に不要なアプリを終了し、必要であれば `QwenVLModel` 内の生成設定（`maxTokens` など）を削減してください。
 
 ## セットアップ手順
 
@@ -61,12 +64,13 @@ Xcode で開いたら、自動的に `mlx-swift` パッケージを解決しま�
    - Mac でビルドする場合はビルド後に `~/Library/Containers/<bundle-id>/Data/Library/Application Support/Models/` にコピーします。
    - iPad にサイドロードする場合は、Finder または iCloud Drive を使って
      `Files` アプリ内の `Qwen VL Demo/Library/Application Support/Models/` に転送してください。
+   - iPhone にサイドロードする場合も同様に `Files` アプリの「この iPhone 内」> `Qwen VL Demo/Library/Application Support/Models/` に配置してください。
 
 > **ヒント**: ディスク容量節約のため不要なファイル（README, LICENSE など）はダウンロード時に除外しています。
 
 ### 3. ビルド & 実行
 
-1. ターゲットデバイスとして iPad（実機）を選択します。
+1. ターゲットデバイスとして iPad または iPhone（実機）を選択します。
 2. 初回起動時にカメラとフォトライブラリのアクセス許可を求められるので許可してください。
 3. アプリ画面で写真を撮影/選択し、デフォルトのプロンプトを必要に応じて編集して「文章を生成」をタップします。
 4. 推論が完了すると生成テキストが表示されます。
@@ -84,7 +88,7 @@ Xcode で開いたら、自動的に `mlx-swift` パッケージを解決しま�
 | ---- | ---- |
 | `mlx-swift` がビルドできない | Xcode の `File > Packages > Reset Package Caches` を実行、または `DerivedData` をクリアしてください。 |
 | アプリ開始時に "モデルを初期化できませんでした" と表示 | モデルフォルダが Application Support の `Models/Qwen3-VL-4B-Instruct-MLX-4bit` に存在するか確認してください。 |
-| 生成が極端に遅い | 温度や `maxTokens` を `QwenVLModel` の `GenerationConfig` 内で調整してください。 |
+| 生成が極端に遅い | 温度や `maxTokens` を `QwenVLModel` の `GenerationConfig` 内で調整してください。メモリに余裕がないデバイス（iPhone 15 Pro など）では、他アプリを終了してから実行してください。 |
 | API 変更でビルドが通らない | `QwenVLModel` 内のラッパークラス（`VisionLanguageChat`, `QwenVisionEncoder` 等）を最新の MLX Swift API に合わせて書き換えてください。 |
 
 ## ライセンスと利用規約

@@ -3,28 +3,35 @@ import PhotosUI
 
 struct ContentView: View {
     @EnvironmentObject private var viewModel: QwenVLViewModel
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var selectedPhotoItem: PhotosPickerItem?
     @FocusState private var promptIsFocused: Bool
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 24) {
-                    photoSection
-                    promptSection
-                    actionSection
-                    outputSection
+            GeometryReader { proxy in
+                let padding = horizontalPadding(for: proxy.size.width)
+                ScrollView {
+                    VStack(spacing: sectionSpacing) {
+                        photoSection(maxWidth: proxy.size.width - padding * 2)
+                        promptSection
+                        actionSection
+                        outputSection
+                    }
+                    .padding(.horizontal, padding)
+                    .padding(.vertical, 24)
                 }
-                .padding(24)
-            }
-            .navigationTitle("Qwen VL Demo")
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button("閉じる") {
-                        promptIsFocused = false
+                .frame(maxWidth: .infinity)
+                .navigationTitle("Qwen VL Demo")
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("閉じる") {
+                            promptIsFocused = false
+                        }
                     }
                 }
+                .scrollDismissesKeyboard(.interactively)
             }
         }
         .task {
@@ -32,7 +39,11 @@ struct ContentView: View {
         }
     }
 
-    private var photoSection: some View {
+    @ViewBuilder
+    private func photoSection(maxWidth: CGFloat) -> some View {
+        let effectiveWidth = max(maxWidth, 280)
+        let containerHeight = adaptivePhotoHeight(for: effectiveWidth)
+
         VStack(alignment: .leading, spacing: 12) {
             Text("画像入力")
                 .font(.headline)
@@ -41,26 +52,29 @@ struct ContentView: View {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6]))
                     .foregroundStyle(.secondary)
-                    .frame(height: 260)
 
                 if let uiImage = viewModel.uiImage {
                     Image(uiImage: uiImage)
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: .infinity, maxHeight: 240)
+                        .frame(maxWidth: effectiveWidth)
+                        .frame(maxHeight: containerHeight - 24)
                         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 } else {
                     VStack(spacing: 12) {
                         Image(systemName: "camera.viewfinder")
-                            .font(.system(size: 48))
+                            .font(.system(size: horizontalSizeClass == .compact ? 38 : 48))
                             .foregroundColor(.secondary)
                         Text("カメラで撮影するか、フォトライブラリから選択してください")
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
+                            .font(horizontalSizeClass == .compact ? .subheadline : .body)
                     }
                     .padding()
                 }
             }
+            .frame(maxWidth: .infinity)
+            .frame(height: containerHeight)
 
             PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
                 Label("画像を選択 / 撮影", systemImage: "photo.on.rectangle.angled")
@@ -83,7 +97,7 @@ struct ContentView: View {
                 .font(.headline)
             TextEditor(text: $viewModel.prompt)
                 .focused($promptIsFocused)
-                .frame(minHeight: 120)
+                .frame(minHeight: promptEditorMinHeight)
                 .padding(12)
                 .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(
@@ -150,6 +164,23 @@ struct ContentView: View {
                     .background(Color.secondary.opacity(0.08), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
         }
+    }
+
+    private var sectionSpacing: CGFloat {
+        horizontalSizeClass == .compact ? 20 : 24
+    }
+
+    private var promptEditorMinHeight: CGFloat {
+        horizontalSizeClass == .compact ? 100 : 140
+    }
+
+    private func horizontalPadding(for width: CGFloat) -> CGFloat {
+        width >= 768 ? 32 : 16
+    }
+
+    private func adaptivePhotoHeight(for width: CGFloat) -> CGFloat {
+        let base = width * 0.62
+        return min(max(base, 200), 360)
     }
 }
 
